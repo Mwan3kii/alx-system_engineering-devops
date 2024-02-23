@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Bash script with signal handling and some actions
+cleanup()
+{
+	rm -f /var/run/myscript.pid
+	exit 0
+}
+terminate()
+{
+	echo "I hate the kill command"
+	cleanup
+}
+interrupt()
+{
+	echo "Y U no love me?!"
+}
+trap 'terminate' SIGTERM SIGQUIT
+trap 'interupt' SIGINT
+echo $$ > /var/run/myscript.pid
+display_msg()
+{
+	while true; do
+		echo "To infinity and beyond"
+		sleep 2
+	done
+}
+display_msg
