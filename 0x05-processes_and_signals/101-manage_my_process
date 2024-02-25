@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 # Script with start, restart, stop
-#!/bin/bash
-
 case "$1" in
 	start)
 		./manage_my_process &
