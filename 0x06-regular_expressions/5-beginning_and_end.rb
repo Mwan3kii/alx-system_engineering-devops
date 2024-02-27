@@ -1,3 +1,3 @@
 #!/usr/bin/env ruby
-sp = /^hn$/
+sp = /^h.n$/
 puts ARGV[0].scan(sp).join
