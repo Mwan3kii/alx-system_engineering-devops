@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Displays listening sockets and the PID of each socket program name
+echo "Active Internet connections (only servers)"
+echo "Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name"
+ss -tlnp | awk '/tcp/ {print "tcp", $4, $7}' | sed -e 's/.*://g' -e 's/->.*//g' | while read address port pid; do
+	program=$(ps -p "$pid" -o comm=)
+	echo "tcp        0      0 $address:$port                  *:*                     LISTEN      $pid/$program"
+done
+ss -ulnp | awk '/udp/ {print "udp", $4, $7}' | sed -e 's/.*://g' -e 's/\/.*//g' | while read port pid; do
+	program=$(ps -p "$pid" -o comm=)
+    	echo "udp        0      0 *:$port                  *:*                                 $pid/$program"
+done
+echo "Active UNIX domain sockets (only servers)"
+echo "Proto RefCnt Flags       Type       State         I-Node   PID/Program name    Path"
+ss -lx | awk '/^unix/ {print $1, $2, $3, $4, $5, $6, $7}' | while read proto refcnt flags type state inode pid_path; do
+	program=$(ps -p "$pid_path" -o comm=)
+	echo "$proto $refcnt $flags $type $state $inode $pid_path $pid/$program"
+done
