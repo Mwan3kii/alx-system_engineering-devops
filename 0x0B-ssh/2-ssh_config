@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # SSH configuration file
 Host *
 	passwordAuthentification no
