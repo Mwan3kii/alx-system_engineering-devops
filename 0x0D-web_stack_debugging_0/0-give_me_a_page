@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# 0-give_me_a_page
+echo 'Hello Holberton' > /var/www/html/index.html
+sudo service apache2 start
