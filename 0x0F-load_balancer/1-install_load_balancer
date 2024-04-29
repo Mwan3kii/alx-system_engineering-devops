@@ -7,14 +7,13 @@ WEB01_IP="35.174.176.33"
 WEB02_IP="54.152.129.84"
 sudo tee /etc/haproxy/haproxy.cfg <<EOF
 global
-    log /dev/log    local0
-    log /dev/log    local1 notice
-    chroot /var/lib/haproxy
-    pidfile /var/run/haproxy.pid
-    maxconn 4096
+    log 127.0.0.1 local0
+    log 127.0.0.1 local1 notice
+    maxconn 2000
     user haproxy
     group haproxy
     daemon
+
 defaults
     mode http
     log global
@@ -22,8 +21,15 @@ defaults
     option dontlognull
     retries 3
     timeout connect 5000ms
-    timeout client 50000ms
-    timeout server 50000ms
+    timeout client 30000ms
+    timeout server 30000ms
+    errorfile 400 /etc/haproxy/errors/400.http
+    errorfile 403 /etc/haproxy/errors/403.http
+    errorfile 408 /etc/haproxy/errors/408.http
+    errorfile 500 /etc/haproxy/errors/500.http
+    errorfile 502 /etc/haproxy/errors/502.http
+    errorfile 503 /etc/haproxy/errors/503.http
+    errorfile 504 /etc/haproxy/errors/504.http
 
 frontend http_front
     bind *:80
@@ -35,6 +41,6 @@ backend http_back
     server web02 ${WEB02_IP}:80 check
 EOF
 sudo systemctl enable haproxy
-sudo systemctl start haproxy
+sudo systemctl restart haproxy
 LOAD_BALANCER_IP="18.235.255.29"
 curl -Is http://$LOAD_BALANCER_IP | grep "X-Served-By"
