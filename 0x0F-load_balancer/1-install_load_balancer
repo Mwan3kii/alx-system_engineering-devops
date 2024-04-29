@@ -2,6 +2,7 @@
 # Configure and install HAproxy on your lb-01 server.
 sudo apt-get update -y
 sudo apt-get install -y haproxy
+echo "ENABLED=1" | sudo tee -a /etc/default/haproxy
 WEB01_IP="35.174.176.33"
 WEB02_IP="54.152.129.84"
 sudo tee /etc/haproxy/haproxy.cfg <<EOF
@@ -35,5 +36,5 @@ backend http_back
 EOF
 sudo systemctl enable haproxy
 sudo systemctl start haproxy
-LOAD_BALANCER_IP="your_load_balancer_ip"
+LOAD_BALANCER_IP="18.235.255.29"
 curl -Is http://$LOAD_BALANCER_IP | grep "X-Served-By"
