@@ -3,17 +3,15 @@
 fetch_domain_info() {
     domain="$1"
     subdomain="$2"
-    result=$(dig "${subdomain}.${domain}" | grep -A1 'ANSWER SECTION:')
-    record_type=$(echo "$result" | awk '/IN/ {print $4}')
-    ip_address=$(echo "$result" | awk '/IN/ {print $5}')
-    echo "The subdomain ${subdomain} is a ${record_type} record and points to ${ip_address}"
+    result=$(dig "${subdomain}.${domain}" | grep -A1 'ANSWER SECTION:' | tr '\t' '\n' | tail -2 | tr '\n' ' ')
+    echo "$subdomain $result" | awk '{print "The subdomain " $1 " is a " $2 " record and points to " $3}'
 }
 if [ $# -eq 1 ]; then
     domain="$1"
-    subdomains=("www" "lb-01" "web-01" "web-02")
-    for sub in "${subdomains[@]}"; do
-        fetch_domain_info "$domain" "$sub"
-    done
+    fetch_domain_info "$domain" "www"
+    fetch_domain_info "$domain" "lb-01"
+    fetch_domain_info "$domain" "web-01"
+    fetch_domain_info "$domain" "web-02"
 elif [ $# -eq 2 ]; then
     domain="$1"
     subdomain="$2"

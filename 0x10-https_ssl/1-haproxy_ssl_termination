@@ -18,12 +18,23 @@ defaults
     timeout connect 5000ms
     timeout client 50000ms
     timeout server 50000ms
+    errorfile 400 /etc/haproxy/errors/400.http
+    errorfile 403 /etc/haproxy/errors/403.http
+    errorfile 408 /etc/haproxy/errors/408.http
+    errorfile 500 /etc/haproxy/errors/500.http
+    errorfile 502 /etc/haproxy/errors/502.http
+    errorfile 503 /etc/haproxy/errors/503.http
+    errorfile 504 /etc/haproxy/errors/504.http
 
 frontend https-in
-    bind *:443 ssl crt=/etc/letsencrypt/live/www.yourdomain.com/fullchain.pem crt-key=/etc/letsencrypt/live/www.yourdomain.com/privkey.pem
+    bind *:443 ssl crt 
     http-request add-header X-Forwarded-Proto https
     default_backend web-backend
 
 backend web-backend
     balance roundrobin
-    server web01 127.0.0.1:80 check
+    server 531662-web-01 35.174.176.33 check
+    server 531662-web-02 54.152.129.84 check
+
+backend letsencrypt-backend
+    server letsencrypt 127.0.0.1:54321
