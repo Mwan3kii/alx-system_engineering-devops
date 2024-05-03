@@ -25,7 +25,8 @@ frontend http-in
     default_backend web-backend
 
 frontend https-in
-    bind *:443 ssl crt=/etc/haproxy/certs/www.bdbnb.site.pem
+    bind 0:80
+    bind *:443 ssl crt=/etc/ssl/private/amwaniki.tech.pem
     http-request add-header X-Forwarded-Proto https
     acl    letsencrypt-acl path_beg /.well-known/acme-challenge/
     use_backend letsencrypt-backend if letsencrypt-acl
@@ -34,8 +35,8 @@ frontend https-in
 backend web-backend
     balance roundrobin
     redirect scheme https if !{ ssl_fc }
-    server 1733-web-01 	3.235.21.36:80 check
-    server 1733-web-02 3.83.35.54:80 check
+    server 531662-web-01 35.174.176.33 check
+    server 531662-web-02 54.152.129.84check
 
 backend letsencrypt-backend
     server letsencrypt 127.0.0.1:54321
