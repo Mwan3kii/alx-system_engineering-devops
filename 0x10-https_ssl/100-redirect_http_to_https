@@ -4,11 +4,7 @@ global
     chroot /var/lib/haproxy
     user haproxy
     group haproxy
-    daemon
-    stats socket /run/haproxy/admin.sock mode 660 level admin
-    stats timeout 30s
-    ssl-default-bind-ciphers PROFILE=SYSTEM
-    ssl-default-bind-options no-sslv3 no-tlsv10
+    tune.ssl.default-dh-param 2048
 
 defaults
     log     global
@@ -19,16 +15,27 @@ defaults
     timeout connect 5000ms
     timeout client 50000ms
     timeout server 50000ms
+    option  http-server-close
+    option  forwardfor
 
 frontend http-in
     bind *:80
     http-request redirect scheme https code 301
+    reqadd X-Forwarded-Proto:\ http
+    default_backend web-backend
 
 frontend https-in
-    bind *:443 ssl crt=/etc/letsencrypt/live/www.yourdomain.com/fullchain.pem crt-key=/etc/letsencrypt/live/www.yourdomain.com/privkey.pem
+    bind *:443 ssl crt=/etc/haproxy/certs/www.bdbnb.site.pem
     http-request add-header X-Forwarded-Proto https
+    acl    letsencrypt-acl path_beg /.well-known/acme-challenge/
+    use_backend letsencrypt-backend if letsencrypt-acl
     default_backend web-backend
 
 backend web-backend
     balance roundrobin
-    server web01 127.0.0.1:80 check
+    redirect scheme https if !{ ssl_fc }
+    server 1733-web-01 	3.235.21.36:80 check
+    server 1733-web-02 3.83.35.54:80 check
+
+backend letsencrypt-backend
+    server letsencrypt 127.0.0.1:54321
