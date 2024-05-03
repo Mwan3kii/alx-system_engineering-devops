@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Configure domain zone so subdomain www points to ur load-balancer IP
-fetch_domain_info() {
+fetch_domain_info () {
     domain="$1"
     subdomain="$2"
     result=$(dig "${subdomain}.${domain}" | grep -A1 'ANSWER SECTION:' | tr '\t' '\n' | tail -2 | tr '\n' ' ')
