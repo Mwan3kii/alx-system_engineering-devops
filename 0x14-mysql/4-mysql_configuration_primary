@@ -1,5 +1,5 @@
 # mysql primary server configuration hosted on web-01
-[mysqld]
+[ mysqld ]
 pid-file       = /var/run/mysqld/mysqld.pid
 log-error       = /var/log/mysql/error.log
 datadir        = /var/lib/mysql

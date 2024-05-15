@@ -1,5 +1,5 @@
 # MySQL server configuration replica must be hosted on web-02
-[mysqld]
+[ mysqld ]
 pid-file        = /var/run/mysqld/mysqld.pid
 datadir         = /var/lib/mysql
 log-error       = /var/log/mysql/error.log
