@@ -1,0 +1,12 @@
+# MySQL server configuration replica must be hosted on web-02
+[mysqld]
+pid-file        = /var/run/mysqld/mysqld.pid
+datadir         = /var/lib/mysql
+log-error       = /var/log/mysql/error.log
+socket          = /var/run/mysqld/mysqld.sock
+bind-address    = 127.0.0.1
+server-id = 2
+symbolic-links  = 0
+log_bin = /var/log/mysql/mysql-bin.log
+binlog_do_db = tyrell_corp
+relay_log = /var/log/mysql/mysql-relay-bin.log

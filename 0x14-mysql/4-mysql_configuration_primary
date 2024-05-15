@@ -1,0 +1,10 @@
+# mysql primary server configuration hosted on web-01
+[mysqld]
+pid-file       = /var/run/mysqld/mysqld.pid
+log-error       = /var/log/mysql/error.log
+datadir        = /var/lib/mysql
+socket         = /var/run/mysqld/mysqld.sock
+symbolic-links = 0
+server-id = 1
+log_bin = /var/log/mysql/mysql-bin.log
+binlog_do_db = tyrell_corp
