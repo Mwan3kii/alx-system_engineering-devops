@@ -4,7 +4,6 @@ import json
 import requests
 
 
-
 if __name__ == "__main__":
     base_url = "https://jsonplaceholder.typicode.com/"
     users = requests.get(base_url + "users").json()
@@ -15,5 +14,5 @@ if __name__ == "__main__":
                 "completed": td.get("completed"),
                 "username": u.get("username")
             } for td in requests.get(base_url + "todos",
-                                    params={"userId": u.get("id")}).json()]
+                                     params={"userId": u.get("id")}).json()]
             for u in users}, jsonfile)
