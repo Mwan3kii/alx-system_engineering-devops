@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""using REST API for employee ID returns TODO list progress"""
 import requests
 import sys
 import json
@@ -12,5 +13,4 @@ if __name__ == "__main__":
 
     print("Employee {} is done with tasks({}/{}):".format(
           emp_user.get("name"), len(completed), len(tdata)))
-    for task in completed:
-        print(f"\t {task}")
+    [print("\t {}".format(e)) for e in completed]
