@@ -2,7 +2,6 @@
 """using REST API for employee ID returns TODO list progress"""
 import requests
 import sys
-import json
 
 
 if __name__ == "__main__":
