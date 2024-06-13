@@ -1,11 +1,11 @@
 # File that fix stack to get 0
-file { 'replace last line':
+file { 'last line':
     ensure  => present,
     path    => '/etc/default/nginx',
     content => 'ULIMIT="-n 4096"',
 }
 
-service { 'nginx':
+service { 'nginx to use':
     ensure    => running,
     subscribe => File['/etc/default/nginx']
 }
