@@ -1,4 +1,11 @@
-exec { 'fix--for-nginx':
-  command => "sed -i 's/worker_processes 4;/worker_processes 7;/g' /etc/nginx/nginx.conf; sudo service nginx restart",
-  path    => ['/bin', '/usr/bin', '/usr/sbin']
+# File that fix stack to get 0
+file { 'replace last line':
+    ensure  => present,
+    path    => '/etc/default/nginx',
+    content => 'ULIMIT="-n 4096"',
+}
+
+service { 'nginx':
+    ensure    => running,
+    subscribe => File['/etc/default/nginx']
 }
