@@ -10,11 +10,12 @@ server {
     location = /airbnb-onepage/ {
         proxy_pass http://0.0.0.0:5000/airbnb-onepage/;
     }
+    error_page 404 /404.html;
+    location = /404.html {
+        internal;
+    }
     add_header X-Served-By gc-1172-web-01-1585065463;
     location /hbnb_static {
         alias /data/web_static/current;
     }
-    error_page 404 /404.html;
-    location = /404.html {                                                      internal;
-    }    
 }
